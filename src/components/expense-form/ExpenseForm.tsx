@@ -1,9 +1,8 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, MenuItem, Box, Typography, Alert } from '@mui/material';
-import type { ExpenseInput } from '../context/types';
-
-const categories = ['Food', 'Travel', 'Bills', 'Others'];
+import { TextField, Button, MenuItem, Box, Alert } from '@mui/material';
+import { CATEGORY_LIST } from './../../constants/categories';
+import type { ExpenseInput } from '../../context/types';
 
 interface ExpenseFormProps {
   onAdd: (expense: ExpenseInput) => void;
@@ -44,7 +43,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAdd }) => {
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}
     >
-      <Typography variant="h6">Add Expense</Typography>
       {submitError && <Alert severity="error">{submitError}</Alert>}
       <Controller
         name="description"
@@ -58,6 +56,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAdd }) => {
             helperText={errors.description?.message}
             required
             fullWidth
+            size="small"
           />
         )}
       />
@@ -68,13 +67,14 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAdd }) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="Amount (INR)"
+            label="Amount"
             type="number"
             error={!!errors.amount}
             helperText={errors.amount?.message}
             inputProps={{ min: 0, step: '0.01' }}
             required
             fullWidth
+            size="small"
           />
         )}
       />
@@ -91,10 +91,11 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAdd }) => {
             helperText={errors.category?.message}
             required
             fullWidth
+            size={'small'}
           >
-            {categories.map(cat => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
+            {CATEGORY_LIST.map(cat => (
+              <MenuItem key={cat.id} value={cat.id}>
+                {cat.label}
               </MenuItem>
             ))}
           </TextField>

@@ -1,1 +1,148 @@
 @import 'tailwindcss';
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply antialiased;
+}
+
+.w-full {
+  @apply w-full;
+}
+
+.app_container {
+  @apply min-h-screen flex items-start justify-center;
+}
+
+.app_container_layout {
+  @apply bg-white max-w-7xl w-full p-4 py-8;
+}
+
+button.add_expense_button {
+  @apply bg-gray-800 max-w-[90px] min-w-[90px] w-full rounded-3xl text-white px-2 py-2;
+  @apply flex flex-row items-center justify-center hover:bg-gray-800 transition-colors duration-300 capitalize;
+}
+
+.transaction.transaction_header {
+  @apply flex w-full flex-row items-center justify-between mb-2;
+}
+
+.transaction.transaction_header .transaction_header_content {
+  @apply flex w-full flex-col items-start justify-center;
+}
+
+.transaction_header .transaction_header_title {
+  @apply text-2xl font-semibold leading-5;
+}
+
+.transaction_header .transaction_header_subtitle {
+  @apply text-gray-500 leading-4.5 pt-1.5;
+}
+
+.transaction_header_actions {
+  @apply flex items-center justify-end;
+}
+
+.table_category_container {
+  @apply inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-100;
+}
+
+.expense_summary {
+  @apply flex flex-col items-start justify-start w-full;
+  @apply rounded-xl shadow border border-gray-300 bg-white;
+  @apply cursor-default;
+}
+
+.expense_summary .expense_summary_content {
+  @apply w-full pb-4;
+}
+
+.expense_summary .expense_summary_content_layout {
+  @apply flex w-full flex-col items-start justify-start;
+}
+
+.expense_summary .expense_summary_header {
+  @apply flex w-full flex-wrap gap-4 items-center justify-between;
+}
+
+.expense_summary .expense_summary_header_title {
+  @apply text-2xl font-bold leading-5;
+}
+
+.expense_summary .expense_summary_toggle {
+  @apply text-xs text-blue-600 underline cursor-pointer;
+}
+
+.expense_summary .expense_summary_balance {
+  @apply w-full flex flex-wrap gap-6 mt-2;
+}
+
+.expense_summary_balance_item {
+  @apply flex flex-col items-start;
+}
+
+.expense_summary_balance_label {
+  @apply text-xs text-gray-500;
+}
+
+.expense_summary_balance_amount {
+  @apply font-bold text-lg;
+}
+
+.balance_pos {
+  @apply text-green-600;
+}
+
+.balance_neg {
+  @apply text-red-600;
+}
+
+.expense_summary_details {
+  @apply mt-2 border-t border-gray-200 pt-2;
+}
+
+.expense_summary_details_title {
+  @apply text-base font-bold text-gray-700 mb-1;
+}
+
+.expense_summary_details_list {
+  @apply flex flex-col gap-1;
+}
+
+.expense_summary_details_item {
+  @apply flex items-center justify-between text-sm rounded transition;
+}
+
+.expense_summary_details_item_label {
+  @apply text-gray-500 capitalize text-[13px] font-medium;
+}
+
+.expense_summary_details_item_amount {
+  @apply font-medium text-[13px] text-gray-500;
+}
+
+/* css for expense table */
+
+.expense_table_container {
+  @apply rounded-xl shadow-none bg-white border-none;
+}
+
+.expense_table {
+  @apply w-full cursor-default select-none;
+  @apply rounded-xl shadow bg-white border-none;
+}
+
+.expense_table_head .expense_table_cell_title {
+  @apply font-bold text-gray-600;
+}
+
+.table_date_text {
+  @apply text-gray-500 text-sm font-medium;
+}
+
+.table_amount_text {
+  @apply text-gray-600 text-sm font-medium;
+}
+
+.expense_table_row {
+  @apply hover:bg-transparent transition-colors duration-200;
+}
