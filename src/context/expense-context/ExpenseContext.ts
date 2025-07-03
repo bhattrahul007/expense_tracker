@@ -1,6 +1,6 @@
-import { createContext } from 'react';
-import type { Expense } from '../../components/expense-list/ExpenseList';
+import type { Expense } from '../../components/types';
 import type { ExpenseInput } from '../types';
+import { createContext } from 'react';
 
 export interface ExpenseContextType {
   expenses: Expense[];

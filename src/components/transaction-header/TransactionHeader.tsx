@@ -3,10 +3,10 @@ import { Typography } from '@mui/material';
 import React from 'react';
 
 export interface TransactionHeaderProps {
-  openAddExpenseModal: (open: boolean) => void;
+  onAddExpense: () => void;
 }
 
-export const TransactionHeader: React.FC<TransactionHeaderProps> = ({ openAddExpenseModal }) => (
+export const TransactionHeader: React.FC<TransactionHeaderProps> = ({ onAddExpense }) => (
   <div className="transaction transaction_header">
     <div className="transaction_header_content">
       <Typography variant="h3" className="transaction_header_title">
@@ -14,7 +14,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({ openAddExp
       </Typography>
     </div>
     <div className="transaction_header_actions">
-      <AddButton onClick={() => openAddExpenseModal(true)} />
+      <AddButton onClick={onAddExpense} />
     </div>
   </div>
 );

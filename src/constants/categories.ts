@@ -1,5 +1,7 @@
+export type CategoryId = 'bills' | 'car' | 'food' | 'income' | 'others' | 'streaming' | 'travel';
+
 export interface Category {
-  id: string;
+  id: CategoryId;
   label: string;
   color: string;
 }

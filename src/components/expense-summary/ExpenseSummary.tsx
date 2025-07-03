@@ -1,16 +1,14 @@
 import { CATEGORY_LIST, INCOME_CATEGORY } from '../../constants/categories';
 import { Card, CardContent, Typography } from '@mui/material';
-import type { Expense } from '../expense-list/ExpenseList';
 import { formatCurrency } from '../../utils/currency';
 import React, { useMemo } from 'react';
+import type { Expense } from '../types';
 
 interface ExpenseSummaryProps {
   expenses: Expense[];
 }
 
 const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
-  const [expanded, setExpanded] = React.useState(false);
-
   const incomeCategorie = CATEGORY_LIST.find(cat => cat.id === INCOME_CATEGORY)?.id || INCOME_CATEGORY;
 
   const { totalIncome, totalExpense, expenseByCategory } = useMemo(() => {
@@ -27,22 +25,14 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
 
   const profit = totalIncome - totalExpense;
 
-  // const expenseByCategory = expenses.reduce<Record<string, number>>((acc, exp) => {
-  //   acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
-  //   return acc;
-  // }, {});
-
   return (
-    <Card elevation={0} sx={{ mb: 4 }} className="expense_summary ">
+    <Card elevation={0} className="expense_summary ">
       <CardContent className="expense_summary_content">
         <div className="expense_summary_content_layout">
           <div className="expense_summary_header">
             <Typography variant="h6" className="expense_summary_title">
               Overview
             </Typography>
-            <button className="expense_summary_toggle" onClick={() => setExpanded(e => !e)}>
-              {expanded ? 'Hide details' : 'Show details'}
-            </button>
           </div>
           <div className="expense_summary_balance w-full">
             <div className="expense_summary_balance_item">
@@ -77,11 +67,15 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
               </Typography>
             </div>
           </div>
-          {expanded && (
-            <div className="expense_summary_details w-full">
-              <Typography variant="body1" className="expense_summary_details_title">
-                Details
-              </Typography>
+          <div className="expense_summary_details w-full">
+            <Typography variant="body1" className="expense_summary_details_title">
+              Details
+            </Typography>
+            {Object.entries(expenseByCategory).length === 0 ? (
+              <div className="w-full h-full flex flex-row items-center justify-center">
+                <Typography className="subtitle">No Data Available</Typography>
+              </div>
+            ) : (
               <ul className="expense_summary_details_list">
                 {Object.entries(expenseByCategory).map(([cat, total]) => (
                   <li key={cat} className="expense_summary_details_item">
@@ -94,8 +88,8 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
                   </li>
                 ))}
               </ul>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -2,10 +2,12 @@ import { Chip, Button, MenuItem, Select, FormControl, InputLabel, OutlinedInput,
 import { CATEGORY_LIST } from '../../constants/categories';
 import React from 'react';
 
+import type { CategoryId } from '../../constants/categories';
+
 export interface FilterBarProps {
   categories: typeof CATEGORY_LIST;
-  selectedCategories: string[];
-  onCategoryChange: (cats: string[]) => void;
+  selectedCategories: CategoryId[];
+  onCategoryChange: (cats: CategoryId[]) => void;
   selectedDates: string[];
   onDateChange: (dates: string[]) => void;
   onClear: () => void;
@@ -26,12 +28,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <Select
           multiple
           value={selectedCategories}
-          onChange={e =>
-            onCategoryChange(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)
-          }
+          onChange={e => {
+            let value = e.target.value;
+            if (typeof value === 'string') value = value.split(',') as CategoryId[];
+            onCategoryChange(value);
+          }}
           input={<OutlinedInput label="Category" />}
           renderValue={selected =>
-            (selected as string[])
+            selected
               .map(id => {
                 const cat = categories.find(c => c.id === id);
                 return cat ? cat.label : id;

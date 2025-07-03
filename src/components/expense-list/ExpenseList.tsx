@@ -3,15 +3,8 @@ import { CATEGORY_LIST } from '../../constants/categories';
 import { formatCurrency } from '../../utils/currency';
 import formatDate from '../../utils/formatDate';
 import { ActionMenu } from '../action-menu';
+import type { Expense } from '../types';
 import React from 'react';
-
-export interface Expense {
-  id: string;
-  description: string;
-  amount: number;
-  category: string;
-  date: string;
-}
 
 interface ExpenseListProps {
   expenses: Expense[];
@@ -19,9 +12,6 @@ interface ExpenseListProps {
 }
 
 const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete }) => {
-  if (expenses.length === 0) {
-    return <Typography variant="body1">No expenses to show.</Typography>;
-  }
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }} className="expense_table_container rounded-xl shadow bg-white">
       <Table size="small" className="expense_table">
@@ -43,6 +33,13 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete }) => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {expenses.length === 0 && (
+            <TableRow className="expense_table_row">
+              <TableCell align="center" colSpan={5} className="expense_table_cell not-found">
+                No expenses found.
+              </TableCell>
+            </TableRow>
+          )}
           {expenses.map(exp => (
             <TableRow key={exp.id} className="expense_table_row hover:bg-gray-50 transition">
               <TableCell className="expense_table_cell">

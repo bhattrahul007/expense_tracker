@@ -1,10 +1,10 @@
-import type { Expense } from '../components/expense-list/ExpenseList';
+import { CATEGORY_LIST, type Category, type CategoryId } from '../constants/categories';
 import { useState, useMemo, useCallback } from 'react';
-import { CATEGORY_LIST, type Category } from '../constants/categories';
+import type { Expense } from '../components/types';
 
 export interface ExpenseFilters {
-  selectedCategories: string[];
-  setSelectedCategories: (cats: string[]) => void;
+  selectedCategories: CategoryId[];
+  setSelectedCategories: (cats: CategoryId[]) => void;
   selectedDates: string[];
   setSelectedDates: (dates: string[]) => void;
   clearFilters: () => void;
@@ -13,19 +13,18 @@ export interface ExpenseFilters {
 }
 
 export function useExpenseFilters(expenses: Expense[]): ExpenseFilters {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<CategoryId[]>([]);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
 
   const categories = useMemo(() => {
-    const used = Array.from(new Set(expenses.map(e => e.category.toLowerCase())));
-    const all = Array.from(new Set([...used, 'income']));
+    const used = Array.from(new Set(expenses.map(e => e.category as CategoryId)));
+    const all = Array.from(new Set([...used, 'income'] as CategoryId[]));
     return CATEGORY_LIST.filter(cat => all.includes(cat.id));
   }, [expenses]);
 
-  // Memoize filtered expenses
   const filteredExpenses = useMemo(() => {
     return expenses.filter(e => {
-      const catMatch = selectedCategories.length === 0 || selectedCategories.includes(e.category.toLowerCase());
+      const catMatch = selectedCategories.length === 0 || selectedCategories.includes(e.category as CategoryId);
       const dateMatch =
         selectedDates.length === 0 ||
         selectedDates.some(date => {

@@ -1,15 +1,16 @@
 import TransactionHeader from './components/transaction-header/TransactionHeader';
 import { ExpenseProvider } from './context/expense-context/ExpenseProvider';
 import ExpenseSummary from './components/expense-summary/ExpenseSummary';
+import { useExpenses } from './context/expense-context/useExpenses';
 import ExpenseForm from './components/expense-form/ExpenseForm';
 import ExpenseList from './components/expense-list/ExpenseList';
-import { useExpenses } from './context/expense-context/useExpenses';
+import { useExpenseFilters } from './hooks/useExpenseFilters';
 import FilterBar from './components/filter-bar/FilterBar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from './components/modal/Modal';
 import React from 'react';
-import { useExpenseFilters } from './hooks/useExpenseFilters';
+import DoughnutChart from './components/charts/DonutChart';
 
 const AppContent: React.FC = () => {
   const { expenses, addExpense, deleteExpense } = useExpenses();
@@ -32,11 +33,14 @@ const AppContent: React.FC = () => {
         <p className="mb-8 text-neutral-500">Keep track of your expenses and income</p>
 
         {/* Summary component */}
-        <ExpenseSummary expenses={expenses} />
+        <div className="flex flex-col items-center md:flex-row md:items-stretch gap-4 mb-8">
+          <ExpenseSummary expenses={expenses} />
+          <DoughnutChart expenseData={expenses} />
+        </div>
 
         {/* Transaction Header with filters */}
         <div className="flex flex-col items-center mb-4">
-          <TransactionHeader openAddExpenseModal={setOpenAdd} />
+          <TransactionHeader onAddExpense={() => setOpenAdd(true)} />
           <div className="self-start">
             <FilterBar
               categories={categories}
