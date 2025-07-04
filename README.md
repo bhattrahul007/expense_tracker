@@ -1,3 +1,62 @@
+# Expense Tracker
+
+A modern, modular, and type-safe React application for tracking expenses and income. Features category-based filtering, summary, and chart visualization. Built with React, TypeScript, Vite, and Material UI.
+
+## Features
+
+- Add, edit, and delete expenses
+- Category-based filtering and summary
+- Monthly breakdown with chart visualization (Chart.js)
+- Responsive and clean UI (Material UI)
+- Data persistence with localStorage
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone <your-repo-url>
+   cd expense_tracker
+   ```
+
+2. **Install dependencies:**
+
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Start the development server:**
+
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open your browser:**
+   Visit [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal)
+
+## Tech Stack
+
+- React + TypeScript
+- Vite
+- Material UI
+- Chart.js
+- LocalStorage (for persistence)
+
+## License
+
+MIT
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -36,15 +95,15 @@ export default tseslint.config([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default tseslint.config([
   globalIgnores(['dist']),
@@ -65,5 +124,5 @@ export default tseslint.config([
       // other options...
     },
   },
-])
+]);
 ```
