@@ -1,17 +1,17 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
-import { CATEGORY_LIST } from '../../constants/categories';
 import { formatCurrency } from '../../utils/currency';
-import formatDate from '../../utils/formatDate';
-import { ActionMenu } from '../action-menu';
-import type { Expense } from '../types';
 import React from 'react';
+import ExpenseRow from './ExpenseRow';
+
+import type { Expense } from '../types';
 
 interface ExpenseListProps {
   expenses: Expense[];
   onDelete: (id: string) => void;
+  onEdit?: (expense: Expense) => void;
 }
 
-const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete }) => {
+export const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete, onEdit }) => {
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }} className="expense_table_container rounded-xl shadow bg-white">
       <Table size="small" className="expense_table">
@@ -41,40 +41,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDelete }) => {
             </TableRow>
           )}
           {expenses.map(exp => (
-            <TableRow key={exp.id} className="expense_table_row hover:bg-gray-50 transition">
-              <TableCell className="expense_table_cell">
-                <Typography variant="body2" className="table_description_text">
-                  {exp.description}
-                </Typography>
-              </TableCell>
-              <TableCell align="center" className="expense_table_cell">
-                <Typography variant="body2" className="table_amount_text">
-                  {formatCurrency('INR', exp.amount)}
-                </Typography>
-              </TableCell>
-              <TableCell align="center" className="expense_table_cell">
-                <div className="table_category_container">
-                  {(() => {
-                    const cat = CATEGORY_LIST.find(c => c.id === exp.category.toLowerCase());
-                    return (
-                      <Typography
-                        variant="body2"
-                        className="table_category_text"
-                        style={{ color: cat?.color ?? '#333' }}
-                      >
-                        {cat?.label ?? exp.category}
-                      </Typography>
-                    );
-                  })()}
-                </div>
-              </TableCell>
-              <TableCell align="center" className="expense_table_cell ">
-                <Typography className="table_date_text">{formatDate(exp.date)}</Typography>
-              </TableCell>
-              <TableCell align="center" className="expense_table_cell">
-                <ActionMenu onDelete={() => onDelete(exp.id)} />
-              </TableCell>
-            </TableRow>
+            <ExpenseRow key={exp.id} expense={exp} onDelete={onDelete} onEdit={onEdit} />
           ))}
         </TableBody>
       </Table>

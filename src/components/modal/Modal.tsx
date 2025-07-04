@@ -12,8 +12,8 @@ interface ModalProps {
   actions?: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ open, title, children, onClose, actions }) => (
-  <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+export const Modal: React.FC<ModalProps> = ({ open, title, children, onClose, actions }) => (
+  <Dialog slotProps={{ paper: { sx: { maxWidth: '600px' } } }} open={open} onClose={onClose} fullWidth maxWidth="xs">
     {title && <DialogTitle>{title}</DialogTitle>}
     <DialogContent>{children}</DialogContent>
     {actions && <DialogActions>{actions}</DialogActions>}

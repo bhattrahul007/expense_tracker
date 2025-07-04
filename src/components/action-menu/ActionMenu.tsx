@@ -2,7 +2,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import React from 'react';
 
-export const ActionMenu: React.FC<{ onDelete: () => void }> = ({ onDelete }) => {
+export const ActionMenu: React.FC<{ onDelete: () => void; onEdit?: () => void }> = ({ onDelete, onEdit }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -25,6 +25,16 @@ export const ActionMenu: React.FC<{ onDelete: () => void }> = ({ onDelete }) => 
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
+        {onEdit && (
+          <MenuItem
+            onClick={() => {
+              onEdit();
+              handleClose();
+            }}
+          >
+            Edit
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             onDelete();

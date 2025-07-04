@@ -58,7 +58,14 @@ export const ExpenseProvider: React.FC<Props> = ({ children }) => {
     setExpenses(prev => prev.filter(exp => exp.id !== id));
   }, []);
 
-  const value = useMemo(() => ({ expenses, addExpense, deleteExpense }), [expenses, addExpense, deleteExpense]);
+  const editExpense = useCallback((updated: Expense) => {
+    setExpenses(prev => prev.map(exp => (exp.id === updated.id ? { ...exp, ...updated } : exp)));
+  }, []);
+
+  const value = useMemo(
+    () => ({ expenses, addExpense, deleteExpense, editExpense }),
+    [expenses, addExpense, deleteExpense, editExpense]
+  );
 
   return <ExpenseContext.Provider value={value}>{children}</ExpenseContext.Provider>;
 };

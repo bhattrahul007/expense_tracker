@@ -1,19 +1,23 @@
-import TransactionHeader from './components/transaction-header/TransactionHeader';
 import { ExpenseProvider } from './context/expense-context/ExpenseProvider';
-import ExpenseSummary from './components/expense-summary/ExpenseSummary';
 import { useExpenses } from './context/expense-context/useExpenses';
-import ExpenseForm from './components/expense-form/ExpenseForm';
-import ExpenseList from './components/expense-list/ExpenseList';
 import { useExpenseFilters } from './hooks/useExpenseFilters';
 import FilterBar from './components/filter-bar/FilterBar';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from './components/modal/Modal';
+import type { Expense } from './components/types';
+import {
+  DeleteExpenseModal,
+  EditExpenseModal,
+  ExpenseForm,
+  ExpenseList,
+  ExpenseSummary,
+  TransactionHeader,
+  DoughnutChart,
+  Modal,
+} from './components';
 import React from 'react';
-import DoughnutChart from './components/charts/DonutChart';
 
 const AppContent: React.FC = () => {
-  const { expenses, addExpense, deleteExpense } = useExpenses();
+  const { expenses, addExpense, deleteExpense, editExpense } = useExpenses();
+  const [editingExpense, setEditingExpense] = React.useState<import('./components/types').Expense | null>(null);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState<string | null>(null);
   const {
@@ -52,39 +56,39 @@ const AppContent: React.FC = () => {
             />
           </div>
         </div>
-        <ExpenseList expenses={filteredExpenses} onDelete={id => setDeleteId(id)} />
+        <ExpenseList
+          expenses={filteredExpenses}
+          onDelete={id => setDeleteId(id)}
+          onEdit={expense => setEditingExpense(expense)}
+        />
         <Modal title="Add Expense" open={openAdd} onClose={() => setOpenAdd(false)}>
           <ExpenseForm
             onAdd={expense => {
               addExpense(expense);
               setOpenAdd(false);
             }}
+            onClose={() => setOpenAdd(false)}
           />
         </Modal>
-        <Modal
+        <EditExpenseModal
+          open={!!editingExpense}
+          expense={editingExpense as Expense}
+          onEdit={expense => {
+            editExpense(expense);
+            setEditingExpense(null);
+          }}
+          onClose={() => setEditingExpense(null)}
+        />
+        <DeleteExpenseModal
           open={!!deleteId}
-          title="Confirm Delete"
           onClose={() => setDeleteId(null)}
-          actions={
-            <>
-              <Button onClick={() => setDeleteId(null)}>Cancel</Button>
-              <Button
-                color="error"
-                variant="contained"
-                onClick={() => {
-                  if (deleteId) {
-                    deleteExpense(deleteId);
-                    setDeleteId(null);
-                  }
-                }}
-              >
-                Delete
-              </Button>
-            </>
-          }
-        >
-          <Typography>Are you sure you want to delete this expense?</Typography>
-        </Modal>
+          onDelete={() => {
+            if (deleteId) {
+              deleteExpense(deleteId);
+              setDeleteId(null);
+            }
+          }}
+        />
       </div>
     </div>
   );

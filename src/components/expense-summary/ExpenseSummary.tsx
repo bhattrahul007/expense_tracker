@@ -8,7 +8,7 @@ interface ExpenseSummaryProps {
   expenses: Expense[];
 }
 
-const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
+export const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({ expenses }) => {
   const incomeCategorie = CATEGORY_LIST.find(cat => cat.id === INCOME_CATEGORY)?.id || INCOME_CATEGORY;
 
   const { totalIncome, totalExpense, expenseByCategory } = useMemo(() => {

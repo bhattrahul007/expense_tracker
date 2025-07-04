@@ -13,7 +13,7 @@ export interface FilterBarProps {
   onClear: () => void;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({
+export const FilterBar: React.FC<FilterBarProps> = ({
   categories,
   selectedCategories,
   onCategoryChange,

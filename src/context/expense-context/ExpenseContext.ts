@@ -6,6 +6,7 @@ export interface ExpenseContextType {
   expenses: Expense[];
   addExpense: (input: ExpenseInput) => void;
   deleteExpense: (id: string) => void;
+  editExpense: (expense: Expense) => void;
 }
 
 export const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
