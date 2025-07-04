@@ -21,12 +21,16 @@ export const DoughnutChart = React.memo(({ expenseData }: { expenseData: Expense
     const canvas = doughnutChartRef.current;
     if (!canvas) return;
 
-    if (!expenseData || expenseData.length === 0) {
-      const doughnutCtx = canvas.getContext('2d');
-      if (!doughnutCtx) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-      // Create empty state chart
-      chartInstanceRef.current = new Chart.Chart(doughnutCtx, {
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
+      chartInstanceRef.current = null;
+    }
+
+    if (!expenseData || expenseData.length === 0) {
+      chartInstanceRef.current = new Chart.Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: ['No Data'],
@@ -56,67 +60,60 @@ export const DoughnutChart = React.memo(({ expenseData }: { expenseData: Expense
           },
         },
       });
-      return;
-    }
+    } else {
+      const income = expenseData.filter(item => item.category === INCOME_CATEGORY);
+      const expenses = expenseData.filter(item => item.category !== INCOME_CATEGORY);
+      const totalIncome = income.reduce((sum, item) => sum + item.amount, 0);
+      const totalExpenses = expenses.reduce((sum, item) => sum + item.amount, 0);
+      const remaining = totalIncome - totalExpenses;
 
-    const income = expenseData.filter(item => item.category === INCOME_CATEGORY);
-    const expenses = expenseData.filter(item => item.category !== INCOME_CATEGORY);
-    const totalIncome = income.reduce((sum, item) => sum + item.amount, 0);
-    const totalExpenses = expenses.reduce((sum, item) => sum + item.amount, 0);
-    const remaining = totalIncome - totalExpenses;
-
-    const doughnutCtx = canvas.getContext('2d');
-    if (!doughnutCtx) return;
-
-    if (chartInstanceRef.current) {
-      chartInstanceRef.current.destroy();
-    }
-
-    chartInstanceRef.current = new Chart.Chart(doughnutCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Income', 'Expenses', 'Remaining'],
-        datasets: [
-          {
-            data: [totalIncome, totalExpenses, remaining],
-            backgroundColor: ['#4BC0C0', '#FF6384', '#FFCE56'],
-            borderWidth: 2,
-            borderColor: '#fff',
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Income vs Expenses Overview',
-          },
-          legend: {
-            position: 'bottom',
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const label = context.label || '';
-                const value = context.parsed;
-                return `${label}: ₹${value.toLocaleString()}`;
+      chartInstanceRef.current = new Chart.Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Income', 'Expenses', 'Remaining'],
+          datasets: [
+            {
+              data: [totalIncome, totalExpenses, remaining],
+              backgroundColor: ['#4BC0C0', '#FF6384', '#FFCE56'],
+              borderWidth: 2,
+              borderColor: '#fff',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Income vs Expenses Overview',
+            },
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const label = context.label || '';
+                  const value = context.parsed;
+                  return `${label}: ₹${value.toLocaleString()}`;
+                },
               },
             },
           },
         },
-      },
-    });
-  }, [expenseData]);
+      });
+    }
 
-  useEffect(() => {
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [expenseData]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="flex flex-col items-center max-w-[400px]">
