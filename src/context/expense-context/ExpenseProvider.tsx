@@ -8,36 +8,11 @@ const LOCAL_STORAGE_KEY = 'expenses';
 
 type Props = { children: React.ReactNode };
 export const ExpenseProvider: React.FC<Props> = ({ children }) => {
-  const [expenses, setExpenses] = useState<Expense[]>([
-    {
-      id: '1',
-      description: 'Netflix',
-      amount: 499,
-      category: 'streaming',
-      date: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      description: 'Car payment',
-      amount: 12000,
-      category: 'car',
-      date: new Date(Date.now() - 86400000).toISOString(),
-    },
-    {
-      id: '3',
-      description: 'Groceries',
-      amount: 2500,
-      category: 'food',
-      date: new Date(Date.now() - 86400000).toISOString(),
-    },
-    {
-      id: '4',
-      description: 'Salary',
-      amount: 50000,
-      category: 'income',
-      date: new Date(Date.now() - 86400000).toISOString(),
-    },
-  ]);
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+    return [];
+  });
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(expenses));
